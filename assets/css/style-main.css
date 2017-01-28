@@ -31,9 +31,9 @@
 .homeContent{
    background-image: url('../img/background.jpg');
     background-repeat: no-repeat;
-    background-attachment: fixed;
-   background-position: 30% 20%; 
-    border: 1px red solid; 
+   /* background-attachment: fixed;*/
+   background-position: center;
+
     width: 100%;
     min-height: 800px;
 }
