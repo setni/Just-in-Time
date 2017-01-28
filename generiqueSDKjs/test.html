@@ -3,14 +3,11 @@
         <title>
             GenericSDK example
         </title>
-        <script>
-
-
-
-        </script>
+        <meta charset="UTF-8">
     </head>
     <body>
         <h1>Generic JS SDK</h1>
+        <img alt="" src="pacman2.gif" style="display:none;" id="pacman" />
         <form action="javascript:test.request();">
             <label for="dataset">dataset</label>
             <select name="dataset" id="dataset">
@@ -67,32 +64,54 @@
     }(document, 'script', 'generiquesdk'));
 
 
-    var test = {};
-    test.opendata = function () {
-        GeneriqueSDK = new GeneriqueSDK();
-        GeneriqueSDK.setApikey("7b2b51dcc8bc960844df6cd087909cc16469e118643886d6ee1c6730");
-        GeneriqueSDK.setUrl("https://psa.opendatasoft.com/api/records/1.0/search/");
+    var test = {
+        opendata: function () {
+            GeneriqueSDK = new GeneriqueSDK();
+            GeneriqueSDK.setApikey("7b2b51dcc8bc960844df6cd087909cc16469e118643886d6ee1c6730");
+            GeneriqueSDK.setUrl("https://psa.opendatasoft.com/api/records/1.0/search/");
 
+        },
 
-    }
+        request: function () {
+            document.getElementById("pacman").style.display = "block";
+            var e = document.getElementById("dataset");
+            var dataset = e.options[e.selectedIndex].text;
+            var query = document.getElementById("query").value;
+            var data = {
+                dataset: dataset,
+                lang: "fr",
+                q: query,
+                rows: 10000,
+                start: 0
+            };
 
-    test.request = function () {
-        var e = document.getElementById("dataset");
-        var dataset = e.options[e.selectedIndex].text;
-        var query = document.getElementById("query").value || "FAURECIA SIEGE";
-        var data = {
-            dataset: dataset,
-            lang: "fr",
-            q: query,
-            rows: 100
-        };
+            GeneriqueSDK.get(data, function (r) {
+                if(r.error) {
+                    document.getElementById("pacman").style.display = "none";
+                    throw r.error;
+                }
+                if(data.dataset == "chrono_taux_de_services_fournisseurs") {
+                    console.log(test.extraValue(r));
+                }
+                document.getElementById("nhits").innerHTML = JSON.stringify("nb résultats: "+r.nhits);
+                //document.getElementById("main").innerHTML = JSON.stringify(r.records);
+                console.log(r);
+            });
+        },
+        extraValue: function (r) {
+            var j = 0;
+            for(var i= 0; i < r.records.length; i++) {
+                var theo = new Date(r.records[i].fields.theoricaldhxx);
+                var real = new Date(r.records[i].fields.realdhxx);
 
-        GeneriqueSDK.get(data, function (r) {
-            document.getElementById("nhits").innerHTML = JSON.stringify("nb résultats: "+r.nhits);
-            document.getElementById("main").innerHTML = JSON.stringify(r.records);
-            console.log(r);
-        });
-    }
+                if(real.getTime()+(24*3600*1000)< theo.getTime() || real.getTime() > theo.getTime()+(2592*1000000)) {
+                    j++;
+                }
+            }
+            document.getElementById("pacman").style.display = "none";
+            return j+" valeurs aberrantes";
+        }
+    };
 
     </script>
     </body>

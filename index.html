@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="justintime">
+<head>
+	<title> Just in Time - Dashboard </title>
+
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+
+	  <link rel="stylesheet" type="text/css" href="../assets/css/style-main.css">
+
+
+</head>
+<body ng-controller="mainCtrl as m">
+
+<ul>
+  <li><a class="active" href="#/home">Home</a></li>
+  <li><a href="#/news"> Orders </a></li>
+  <li><a href="#/contact">Real Time</a></li>
+  <li><a href="#/about">About</a></li>
+</ul>
+
+
+
+<div class="container" ng-view></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/controllers/MainController.js"></script>
+<script src="assets/js/controllers/HomeCtrl.js"></script>
+<script src="assets/js/controllers/NewsCtrl.js"></script>
+<script src="assets/js/controllers/AboutCtrl.js"></script>
+<script src="assets/js/controllers/ContactCtrl.js"></script>
+<script src="assets/js/factory/factory.js"></script>
+<script src="assets/js/directive/directive.js"></script>
+</body>
+</html>

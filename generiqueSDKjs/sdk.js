@@ -110,7 +110,7 @@ var GeneriqueSDK = function ()
                     onTimeout: function(){
                         console.log('timeout!');
                     },
-                    timeout: 5
+                    timeout: 500
                 },
                 this.apikey,
                 this.apikeyPar
