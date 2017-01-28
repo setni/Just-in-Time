@@ -11,8 +11,14 @@ function launchMap() {
 }
 
 
-function displayClusters(data) {
-		console.log('display data : ', data);
+$(".poiProviders").click(function(){
 
-}
+	alert('Yupiiii ');
+  // Holds the product ID of the clicked element
+  /*var productId = $(this).attr('class').replace('addproduct ', '');
+  addToCart(productId); */
+
+
+
+});
 

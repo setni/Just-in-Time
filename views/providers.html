@@ -10,7 +10,7 @@
 			 
 
 
-			 	<div class="poiProviders"   ng-repeat="x in providersList | filter:q as results">
+			 	<div ng-click="getProviderById()" class="poiProviders"   ng-repeat="x in providersList | filter:q as results">
 			    	<div id={{x.fields.cofor_fnr_liv}}  > <b> {{x.fields.libelle_fnr_fab}}  </b> </div>
 			    	<div> {{x.fields.cofor_fnr_liv}}   </div>			      
 			    </div>

@@ -11,7 +11,7 @@ angular.module('justintime').controller('providersCtrl', ['$scope','$http',
 		        $scope.providersList = poiList;
 
 		        console.log(response.data);     
-		    });
+		 });
 
     }
 ]);
