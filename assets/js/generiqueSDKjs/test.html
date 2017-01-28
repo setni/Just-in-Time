@@ -1,0 +1,249 @@
+<html>
+    <head>
+        <title>
+            GenericSDK example
+        </title>
+        <meta charset="UTF-8">
+        <style>
+
+        .axis path,
+        .axis line {
+        	fill: none;
+        	stroke: black;
+        	shape-rendering: crispEdges;
+        }
+        .axis text {
+        	font-family: sans-serif;
+        	font-size: 11px;
+        }
+
+        rect {
+        	-moz-transition: all 0.3s;
+        	-webkit-transition: all 0.3s;
+        	-o-transition: all 0.3s;
+        	transition: all 0.3s;
+        }
+        rect:hover{
+        	fill: orange;
+        }
+        </style>
+    </head>
+    <body>
+        <h1>Generic JS SDK</h1>
+        <img alt="" src="pacman2.gif" style="display:none;" id="pacman" />
+        <form action="javascript:test.request();">
+            <p>Search</p>
+            <label for="dataset">dataset</label>
+            <select name="dataset" id="dataset">
+                <option selected="selected">chrono_taux_de_services_fournisseurs</option>
+                <option>chrono_evenement_production</option>
+                <option>chrono_anomalies_de_fabrication_vehicule</option>
+                <option>chrono_flux_vehicule_dans_usine</option>
+                <option>calendrier_evenement_production</option>
+                <option>carto_fournisseurs_site</option>
+                <option>chrono_duree_evenement_andon_par_uep</option>
+                <option>chrono_evenement_andon_par_uep</option>
+                <option>carto_localisation_employés</option>
+                <option>chrono_mode_transport_utilisés</option>
+                <option>vehicules_fabriques</option>
+                <option>chrono_evenement_absence</option>
+            </select>
+            <label for="query">query</label>
+            <input type="text" name="query" id="query">
+            <input type="submit" value="search">
+        </form>
+
+        <div id="myDiv" style="width: 480px; height: 400px;"></div>
+        <p id="nhits"></p>
+        <p id="main">
+
+        </p>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type='text/javascript'>
+
+    "use strict";
+    //declare sdk
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+
+        // listerner
+        if (js.readyState){  //IE
+            js.onreadystatechange = function()
+            {
+                if (js.readyState == "loaded" ||
+                    js.readyState == "complete"){
+                        js.onreadystatechange = null;
+                        test.opendata();
+                }
+            }
+        } else {
+            js.onload = function ()
+            {
+                test.opendata();
+            };
+        }
+    }(document, 'script', 'generiquesdk'));
+
+
+    var test = {
+        opendata: function () {
+            GeneriqueSDK = new GeneriqueSDK();
+            GeneriqueSDK.setApikey("7b2b51dcc8bc960844df6cd087909cc16469e118643886d6ee1c6730");
+            GeneriqueSDK.setUrl("https://psa.opendatasoft.com/api/records/1.0/search/");
+        },
+
+        request: function () {
+            document.getElementById("pacman").style.display = "block";
+            var e = document.getElementById("dataset");
+            var dataset = e.options[e.selectedIndex].text;
+            var query = document.getElementById("query").value;
+            var data = {
+                dataset: dataset,
+                lang: "fr",
+                q: query,
+                rows: 1000,
+                start: 0
+            };
+
+            GeneriqueSDK.get(data, function (r) {
+                if(r.error) {
+                    document.getElementById("pacman").style.display = "none";
+                    throw r.error;
+                }
+                if(dataset == "chrono_taux_de_services_fournisseurs") {
+                    console.log(test.extraValue(r));
+                }
+                document.getElementById("nhits").innerHTML = JSON.stringify("nb résultats: "+r.nhits);
+                //document.getElementById("main").innerHTML = JSON.stringify(r.records);
+                console.log(r);
+            });
+        },
+        download: function ()
+        {
+            document.getElementById("pacman").style.display = "block";
+            var e = document.getElementById("dataset");
+            var dataset = e.options[e.selectedIndex].text;
+            var query = document.getElementById("query").value;
+            GeneriqueSDK.setUrl("https://psa.opendatasoft.com/api/records/1.0/download/");
+            var data = {
+                dataset: dataset,
+                format: 'json',
+                lang: "fr",
+                q: ""
+            };
+            GeneriqueSDK.get(data, function (r) {
+                if(r.error) {
+                    document.getElementById("pacman").style.display = "none";
+                    throw r.error;
+                }
+                if(dataset == "chrono_taux_de_services_fournisseurs") {
+                    console.log(test.extraValue(r));
+                }
+                document.getElementById("nhits").innerHTML = JSON.stringify("nb résultats: "+r.nhits);
+                //document.getElementById("main").innerHTML = JSON.stringify(r.records);
+                console.log(r);
+            });
+        },
+        extraValue: function (r) {
+            var j = 0;
+            var array = [];
+            for(var i= 0; i < r.records.length; i++) {
+                var theo = new Date(r.records[i].fields.theoricaldhxx);
+                var real = new Date(r.records[i].fields.realdhxx);
+
+                if(real.getTime()+(24*3600*1000)< theo.getTime() || real.getTime() > theo.getTime()+(30*3600*24*1000)) {
+                    j++;
+                } else if(Math.abs((real.getTime() - theo.getTime())) < 3600*24*1000) {
+                    array.push(parseInt((real.getTime()-theo.getTime())/(1000*60*30)));
+                }
+            }
+            var count = test.arrayCount(array);
+            test.creategraph({
+                key: count[0],
+                value: count[1]
+            });
+
+            document.getElementById("pacman").style.display = "none";
+            return j+" valeurs aberrantes";
+        },
+        arrayCount: function(arr) {
+            var a = [], b = [], prev;
+
+            arr.sort();
+            for ( var i = 0; i < arr.length; i++ ) {
+                if ( arr[i] !== prev ) {
+                    a.push(arr[i]*30);
+                    b.push(1);
+                } else {
+                    b[b.length-1]++;
+                }
+                prev = arr[i];
+            }
+
+            return [a, b];
+        },
+        creategraph: function (dataset) {
+            var data = [
+              {
+                x: dataset.key,
+                y: dataset.value,
+                type: 'bar'
+
+              }
+            ];
+            var layout = {                     // all "layout" attributes: #layout
+                title: 'retard de livraison',  // more about "layout.title": #layout-title
+                xaxis: {                  // all "layout.xaxis" attributes: #layout-xaxis
+                    title: 'Par minute de retard, tranche de 30 minutes'         // more about "layout.xaxis.title": #layout-xaxis-title
+                },
+                yaxis: {                  // all "layout.xaxis" attributes: #layout-xaxis
+                    title: 'Fréquence'         // more about "layout.xaxis.title": #layout-xaxis-title
+                }
+            };
+
+            Plotly.newPlot('myDiv', data, layout);
+        }
+    };
+
+
+
+
+
+    </script>
+    </body>
+
+    <section class="navBar">
+    	<ul>
+    	  <li><a class="active" href="#/home">Home</a></li>
+    	   <li><a href="#/providers"> Providers </a></li>
+    	   <li><a href="#/charts"> Charts </a></li>
+    	  <li><a href="#/news"> Orders </a></li>
+    	  <li><a href="#/contact">Real Time</a></li>
+    	  <li><a href="#/about">About</a></li>
+    	</ul>
+    </section>
+
+
+
+    <div ng-view></div>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="./assets/js/generiqueSDKjs/sdk.js"></script>
+    <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/controllers/MainController.js"></script>
+    <script src="./assets/js/controllers/HomeCtrl.js"></script>
+    <script src="./assets/js/controllers/NewsCtrl.js"></script>
+    <script src="./assets/js/controllers/AboutCtrl.js"></script>
+    <script src="./assets/js/controllers/ContactCtrl.js"></script>
+    <script src="./assets/js/controllers/providersCrtl.js"></script>
+    <script src="./assets/js/controllers/chartsCtrl.js"></script>
+
+</html>
