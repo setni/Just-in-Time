@@ -1,0 +1,99 @@
+<html>
+    <head>
+        <title>
+            GenericSDK example
+        </title>
+        <script>
+
+
+
+        </script>
+    </head>
+    <body>
+        <h1>Generic JS SDK</h1>
+        <form action="javascript:test.request();">
+            <label for="dataset">dataset</label>
+            <select name="dataset" id="dataset">
+                <option selected="selected">chrono_taux_de_services_fournisseurs</option>
+                <option>chrono_evenement_production</option>
+                <option>chrono_anomalies_de_fabrication_vehicule</option>
+                <option>chrono_flux_vehicule_dans_usine</option>
+                <option>calendrier_evenement_production</option>
+                <option>carto_fournisseurs_site</option>
+                <option>chrono_duree_evenement_andon_par_uep</option>
+                <option>chrono_evenement_andon_par_uep</option>
+                <option>carto_localisation_employés</option>
+                <option>chrono_mode_transport_utilisés</option>
+                <option>vehicules_fabriques</option>
+                <option>chrono_evenement_absence</option>
+            </select>
+            <label for="query">query</label>
+            <input type="text" name="query" id="query">
+            <input type="submit" value="search">
+        </form>
+        <p id="nhits"></p>
+        <p id="main">
+
+        </p>
+
+
+    <script type='text/javascript'>
+
+    "use strict";
+    //declare sdk
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+
+        // listerner
+        if (js.readyState){  //IE
+            js.onreadystatechange = function()
+            {
+                if (js.readyState == "loaded" ||
+                    js.readyState == "complete"){
+                        js.onreadystatechange = null;
+                        test.opendata();
+                }
+            }
+        } else {
+            js.onload = function ()
+            {
+                test.opendata();
+            };
+        }
+    }(document, 'script', 'generiquesdk'));
+
+
+    var test = {};
+    test.opendata = function () {
+        GeneriqueSDK = new GeneriqueSDK();
+        GeneriqueSDK.setApikey("7b2b51dcc8bc960844df6cd087909cc16469e118643886d6ee1c6730");
+        GeneriqueSDK.setUrl("https://psa.opendatasoft.com/api/records/1.0/search/");
+
+
+    }
+
+    test.request = function () {
+        var e = document.getElementById("dataset");
+        var dataset = e.options[e.selectedIndex].text;
+        var query = document.getElementById("query").value || "FAURECIA SIEGE";
+        var data = {
+            dataset: dataset,
+            lang: "fr",
+            q: query,
+            rows: 100
+        };
+
+        GeneriqueSDK.get(data, function (r) {
+            document.getElementById("nhits").innerHTML = JSON.stringify("nb résultats: "+r.nhits);
+            document.getElementById("main").innerHTML = JSON.stringify(r.records);
+            console.log(r);
+        });
+    }
+
+    </script>
+    </body>
+</html>
