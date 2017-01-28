@@ -8,33 +8,43 @@
 
 
 
-	  <link rel="stylesheet" type="text/css" href="../assets/css/style-main.css">
+	  <link rel="stylesheet" type="text/css" href="./assets/css/style-main.css">
 
 
 </head>
 <body ng-controller="mainCtrl as m">
+<section class="navBar">
+	<ul>
+	  <li><a class="active" href="#/home">Home</a></li>
+	   <li><a href="#/providers"> Providers </a></li>
+	  <li><a href="#/news"> Orders </a></li>
+	  <li><a href="#/contact">Real Time</a></li>
+	  <li><a href="#/about">About</a></li>
+	</ul>
+</section>
 
-<ul>
-  <li><a class="active" href="#/home">Home</a></li>
-  <li><a href="#/news"> Orders </a></li>
-  <li><a href="#/contact">Real Time</a></li>
-  <li><a href="#/about">About</a></li>
-</ul>
 
 
-
-<div class="container" ng-view></div>
+<div ng-view></div>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
-<script src="assets/js/main.js"></script>
-<script src="assets/js/controllers/MainController.js"></script>
-<script src="assets/js/controllers/HomeCtrl.js"></script>
-<script src="assets/js/controllers/NewsCtrl.js"></script>
-<script src="assets/js/controllers/AboutCtrl.js"></script>
-<script src="assets/js/controllers/ContactCtrl.js"></script>
-<script src="assets/js/factory/factory.js"></script>
-<script src="assets/js/directive/directive.js"></script>
+<script src="./assets/js/main.js"></script>
+<script src="./assets/js/controllers/MainController.js"></script>
+<script src="./assets/js/controllers/HomeCtrl.js"></script>
+<script src="./assets/js/controllers/NewsCtrl.js"></script>
+<script src="./assets/js/controllers/AboutCtrl.js"></script>
+<script src="./assets/js/controllers/ContactCtrl.js"></script>
+<script src="./assets/js/controllers/providersCrtl.js"></script>
+
+<script src="./assets/js/factory/factory.js"></script>
+<script src="./assets/js/directive/directive.js"></script>
+
+
+<script src="http://apijsv2.viamichelin.com/apijsv2/api/js?key=JSBS20120706094906978014410907$167907&lang=fra" type="text/javascript"></script>
+<script src="./assets/js/map/map.js"></script>
+
+
 </body>
 </html>

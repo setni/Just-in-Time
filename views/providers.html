@@ -1,0 +1,30 @@
+<div ng-controller="providersCtrl">
+	<!--p>{{ message }}</p -->
+
+	<div>
+		<div id="providersList"> 
+			 <input type="text" value="" class="inputFeild" name="myAddress" id="myAddress" placeholder="Provider name, ..." required="" autocomplete="off" ng-model="q" >
+
+			 <div id="providersListDetails">
+
+			 
+
+
+			 	<div class="poiProviders"   ng-repeat="x in providersList | filter:q as results">
+			    	<div id={{x.fields.cofor_fnr_liv}}  > <b> {{x.fields.libelle_fnr_fab}}  </b> </div>
+			    	<div> {{x.fields.cofor_fnr_liv}}   </div>			      
+			    </div>
+			    <div class="poiProviders"   ng-if="results.length === 0">
+			    	<div> Not found ... </div>			    		      
+			    </div>
+
+			 
+
+
+			 </div>		  
+
+		</div>
+		<div id="providersMap">  </div>
+
+	</div>
+</div>
