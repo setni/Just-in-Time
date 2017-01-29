@@ -2,39 +2,42 @@
 	<!--p>{{ message }}</p -->
 
 	<div class="providersListContainer">
-		
-		
-		<div id="providersList"> 		
+
+
+		<div id="providersList">
 			 <input type="text" value="" class="inputFeild" name="myAddress" id="myAddress" placeholder="Provider name, ..." required="" autocomplete="off" ng-model="q" >
 
 			 <div id="providersListDetails">
 			 	<div ng-repeat="x in providersList | filter:q as results" ng-click="doClick(x,$event)" id={{x.fields.cofor_fnr_liv}} class="poiProviders"   >
 			    	<div > <b> {{x.fields.libelle_fnr_fab}}  </b> </div>
-			    	<div> {{x.fields.cofor_fnr_liv}}   </div>			      
+			    	<div> {{x.fields.cofor_fnr_liv}}   </div>
 			    </div>
 			    <div class="poiProviders"   ng-if="results.length === 0">
-			    	<div> Not found ... </div>			    		      
+			    	<div> Not found ... </div>
 			    </div>
-			</div>	 
+			</div>
 		</div>
 		<div id="detailsProvider">
-			<div class="provider" >				
+			<div class="provider" >
 				<div > <b> {{ selectedItem.fields.libelle_fnr_fab }} </b> </div>
-				<div> {{selectedItem.fields.cofor_fnr_liv}} </div>					
+				<div> {{selectedItem.fields.cofor_fnr_liv}} </div>
 			</div>
 			<div id="currentDelivery">
 				<div> <b> <i> Current delivrey </i></b></div>
-				
-				
-				
+
+
+
 				<div class="truckItem" ng-repeat="x in currentDeliveryList">
-					<div > <b> Ref :  {{ x.id }} </b> </div>
-					<div > <b> Driver Name : </b> {{ x.driver_name }} </div>
-					<div > <b> Phone Number : </b> {{ x.phone_number }} </div>
-					<div > <b>Arriving Time : </b> {{ x.arriving_time }} </div>
-					<div > <b> Tolerance advance Time : </b> {{ x.tolerance_advance_time }} </div>
-					<div > <b> Tolerance delay Time : </b> {{ x.tolerance_delay_time }} </div>
-					<div > <b> Estimated arriving time (ViaMichelin) :</b>  {{ x.estimated_arriving_time_by_viaMichelin }} </div>
+					<div > <b> Ref :  {{ x.id }} </b> <span ng-click="detailDisplay(x.index)" ng-show="!showDetail[x.index]">+</span><span ng-click="detailClose(x.index)" ng-show="showDetail[x.index]">-</span>  </div>
+					<div ng-show="showDetail[x.index]">
+						<div > <b> Driver Name : </b> {{ x.driver_name }} </div>
+						<div > <b> Phone Number : </b> {{ x.phone_number }} </div>
+						<div > <b>Arriving Time : </b> {{ x.arriving_time }} </div>
+						<div > <b> Tolerance advance Time : </b> {{ x.tolerance_advance_time }} </div>
+						<div > <b> Tolerance delay Time : </b> {{ x.tolerance_delay_time }} </div>
+					</div>
+					<div style="background-color: #93eaa3;color:BLACK;" > <b> Estimated arriving time: </b>  {{ x.estimated_arriving_time_by_viaMichelin }} </div>
+
 				</div>
 
 
@@ -44,5 +47,5 @@
 
 	</div>
 
-	<div id="providersMap">  </div>	
+	<div id="providersMap">  </div>
 </div>

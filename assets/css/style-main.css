@@ -12,7 +12,7 @@
 
 
 .navBar ul> li {
-    float: left;  
+    float: left;
 }
 
 .navBar ul> li a {
@@ -39,14 +39,14 @@
 }
 
 .providersListContainer{
-    width: 350px;  
+    width: 350px;
     float: left;
 }
 
 #providersMap{
      float: right;
      height: 600px;
-     width: calc(100% - 360px); 
+     width: calc(100% - 360px);
 }
 
 
@@ -71,32 +71,32 @@
 }
 
 .poiProviders{
-  
+
     background-color: #1EB98F;
-    
+
     border-left: 6px gray solid;
-   
+
 }
 
 .provider{
-  background-color: #D4534E ; 
+  background-color: #D4534E ;
   text-align: center;
 }
 
 .truckItem{
-    background-color: #857A81; 
+    background-color: #22313f;
     border-left: 5px #D4534E solid;
 }
 
 .poiProviders:hover{
-  background-color: #2f9e7e; 
-  cursor: pointer;  
+  background-color: #2f9e7e;
+  cursor: pointer;
 }
 
 
 
 #providersListDetails{
 
-    overflow:scroll; 
+    overflow:scroll;
     height:550px;
 }
