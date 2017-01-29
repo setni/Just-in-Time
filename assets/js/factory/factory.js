@@ -141,6 +141,7 @@ angular.module('justintime').factory('mainFactory',
             myMap: null,
             marker:"",
             markers: [],
+            traffic:false,
 
             launchMap: function() {
             	var conf = {
@@ -151,7 +152,7 @@ angular.module('justintime').factory('mainFactory',
 
             	var callbacks = {
             		onInit: function(serviceMap){
-            			myMap = serviceMap;
+            			map.myMap = serviceMap;
             		},
             		onClick: function(event){
 
@@ -182,12 +183,12 @@ angular.module('justintime').factory('mainFactory',
 
             	//init markers
             	markers = [];
-            	myMap.removeAllLayers();
+            	map.myMap.removeAllLayers();
 
             	map.addMarkers({lon: data[0].itiTrace[0][map.position0], lat: data[0].itiTrace[1][map.position0] }, './assets/img/truck.png', "shadown", false, " HI   ",  " HI  REF "+data[0].id, "true");
             	map.addMarkers({lon: data[0].itiTrace[0][map.position1], lat: data[0].itiTrace[1][map.position1] }, './assets/img/truck.png', "shadown", false, " HI   ",  " HI  REF "+data[1].id, "true");
             	map.addMarkers({lon: data[0].itiTrace[0][map.position2], lat: data[0].itiTrace[1][map.position2] }, './assets/img/truck.png', "shadown", false, " HI  ", " HI  REF "+data[2].id, "true");
-            	myMap.drawMapFromLayers();
+            	map.myMap.drawMapFromLayers();
 
 
             	var moveTimer = setInterval(function moveTonNextCordinates(){
@@ -220,11 +221,19 @@ angular.module('justintime').factory('mainFactory',
             			autoOpen: "true",
             			title: mytitle
             			});
-            		myMap.addLayer(marker);
+            		map.myMap.addLayer(marker);
             		markers.push(marker)
+            },
+
+            displayTraffic: function(){
+                if (!map.traffic) {
+                   map.myMap.setTraffic(true);
+                   map.traffic =!map.traffic;
+                }else{
+                  map.myMap.setTraffic(false);  
+                  map.traffic =!map.traffic;
+                }
             }
-
-
 
         }
 

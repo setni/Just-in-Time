@@ -51,6 +51,9 @@ angular.module('justintime').controller('providersCtrl', ['$scope','$http', 'mai
         $scope.detailClose = function(index)
         {
             $scope.showDetail[index] = false;
+        };
+        $scope.displayTraffic = function() {
+            mainFactory.map.displayTraffic();
         }
 
     }
