@@ -4,6 +4,18 @@
     <div class="row" >
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <button class="btn btn-primary" ng-click="charts(1)">Retards livraison</button>
+            <br>
+            <button class="btn btn-primary" ng-click="detailFour();">Retards livraison / fournisseur</button>
+            <br>
+            <form ng-show="showSupplierForm" ng-submit="querySupplier()" role="form">
+                <div class="form-group">
+                    <label for="supplier">Fournisseur</label>
+                    <input ng-model="supplier" type="text" class="form-control" id="supplier" placeholder="Entrer le fournisseur">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+ </div>
+ <div class="form-group">
         </div>
 
         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">

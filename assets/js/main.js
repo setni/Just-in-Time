@@ -25,6 +25,9 @@
             .when('/about', {
                 templateUrl: 'views/about.html'
             })
+            .when('/dashboard', {
+                templateUrl: 'views/dashboard.html'
+            })
             .otherwise({
                 templateUrl: 'views/home.html'
             });
